@@ -2,5 +2,6 @@ venv/
 __pycache__/
 *.py[cod]
 output/*.csv
-.vscode/
 .idea/
+config.bat
+node_modules

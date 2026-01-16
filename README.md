@@ -75,6 +75,3 @@ The scraper generates a CSV file with the following columns:
 - HTML structure changes on YC website may require parser updates
 - Rate limiting is applied to avoid overwhelming the server
 
-## License
-
-MIT
