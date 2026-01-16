@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
-"""
-YC Startup Scraper - Main Entry Point
 
-Scrapes Y Combinator startup data including company metadata and founder LinkedIn information.
-Uses async/await for fast, concurrent scraping of 500+ companies.
-
-Usage:
-    python main.py                    # Scrape 500 companies (default)
-    python main.py --limit 100        # Scrape 100 companies
-    python main.py --output data.csv  # Custom output filename
-"""
 
 import argparse
 import asyncio
@@ -30,17 +20,7 @@ async def scrape_company(
     company: dict,
     pbar: tqdm_asyncio = None
 ) -> dict:
-    """
-    Scrape a single company's data including founder information.
-    
-    Args:
-        session: aiohttp client session
-        company: Raw company data from API
-        pbar: Optional progress bar to update
-    
-    Returns:
-        Company dictionary with extracted metadata and founders
-    """
+   
     # Extract basic metadata
     metadata = extract_company_metadata(company)
     
@@ -68,16 +48,8 @@ async def scrape_all_companies(
     companies: list[dict],
     concurrency: int = 20
 ) -> list[dict]:
-    """
-    Scrape all companies concurrently.
-    
-    Args:
-        companies: List of company data from API
-        concurrency: Maximum concurrent requests
-    
-    Returns:
-        List of scraped company data with founders
-    """
+   
+  
     connector = aiohttp.TCPConnector(limit=concurrency)
     timeout = aiohttp.ClientTimeout(total=30)
     
@@ -113,34 +85,25 @@ async def scrape_all_companies(
 
 
 async def main_async(limit: int = 500, output: str = None) -> str:
-    """
-    Main async scraper workflow.
-    
-    Args:
-        limit: Maximum number of companies to scrape
-        output: Optional custom output filename
-    
-    Returns:
-        Path to the generated CSV file
-    """
+   
     start_time = datetime.now()
     logger.info(f"Starting YC Startup Scraper (limit: {limit})")
     
-    # Step 1: Fetch all companies from API
+    # Fetch all companies from API
     async with aiohttp.ClientSession() as session:
         all_companies = await fetch_all_companies(session)
     
-    # Step 2: Select first N companies
+    # Select first N companies
     companies_to_scrape = all_companies[:limit]
     logger.info(f"Selected {len(companies_to_scrape)} companies for scraping")
     
-    # Step 3: Scrape company details and founders
+    # Scrape company details and founders
     scraped_data = await scrape_all_companies(companies_to_scrape)
     
-    # Step 4: Export to CSV
+    # Export to CSV
     output_path = export_to_csv(scraped_data, filename=output)
     
-    # Step 5: Print summary
+    # Print summary
     summary = generate_summary(scraped_data)
     elapsed = datetime.now() - start_time
     
@@ -161,7 +124,7 @@ async def main_async(limit: int = 500, output: str = None) -> str:
 
 
 def main():
-    """CLI entry point."""
+   
     parser = argparse.ArgumentParser(
         description="Scrape YC startup data including founder LinkedIn information"
     )

@@ -1,7 +1,3 @@
-"""
-HTML Parser for extracting founder information from YC company pages.
-Uses BeautifulSoup for parsing and extracting LinkedIn URLs.
-"""
 
 import re
 from typing import Optional
@@ -18,22 +14,8 @@ LINKEDIN_PATTERN = re.compile(
 
 
 def parse_founders_from_html(html: str, company_name: str = "") -> list[dict]:
-    """
-    Parse founder names and LinkedIn URLs from YC company page HTML.
     
-    The YC company pages typically have a founders section with:
-    - Founder names
-    - Links to LinkedIn profiles (when available)
     
-    Args:
-        html: Raw HTML content of the company page
-        company_name: Company name for fallback search URL construction
-    
-    Returns:
-        List of founder dictionaries with keys:
-        - name: Founder's full name
-        - linkedin_url: LinkedIn profile URL or empty string
-    """
     if not html:
         return []
     
@@ -90,7 +72,6 @@ def parse_founders_from_html(html: str, company_name: str = "") -> list[dict]:
 
 
 def _extract_name_near_element(element) -> str:
-    """Extract what appears to be a name near a given element."""
     # Check parent elements for text that looks like a name
     parent = element.parent
     
@@ -127,7 +108,7 @@ def _extract_name_near_element(element) -> str:
 
 
 def _find_founder_sections(soup: BeautifulSoup) -> list:
-    """Find HTML sections that likely contain founder information."""
+  
     sections = []
     
     # Look for elements with founder-related class names or text
@@ -154,7 +135,7 @@ def _find_founder_sections(soup: BeautifulSoup) -> list:
 
 
 def _extract_names_from_section(section) -> list[str]:
-    """Extract potential founder names from a section."""
+    
     names = []
     text = section.get_text(separator='\n', strip=True)
     
@@ -179,9 +160,7 @@ def _extract_names_from_section(section) -> list[str]:
 
 
 def _extract_founders_from_text(soup: BeautifulSoup, company_name: str) -> list[dict]:
-    """
-    Fallback: Extract founder names from page text using patterns.
-    """
+    
     founders = []
     text = soup.get_text()
     
@@ -207,16 +186,7 @@ def _extract_founders_from_text(soup: BeautifulSoup, company_name: str) -> list[
 
 
 def find_linkedin_url(html: str, founder_name: str) -> Optional[str]:
-    """
-    Try to find a LinkedIn URL for a specific founder in the HTML.
     
-    Args:
-        html: Page HTML content
-        founder_name: The founder's name to search for
-    
-    Returns:
-        LinkedIn URL if found, None otherwise
-    """
     if not html or not founder_name:
         return None
     
